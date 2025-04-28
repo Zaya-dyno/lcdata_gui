@@ -44,7 +44,7 @@ function createWindow() {
 
 
   // Load the index.html file
-  mainWindow.loadFile('index.html');
+  mainWindow.loadFile(path.join(__dirname, 'index.html'));
   ipcMain.on('saveFiles', (event, filesData) => {
     filesData.forEach(file => {
       console.log(file);

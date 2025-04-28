@@ -19,6 +19,9 @@
     "appId": "com.electron.app",
     "mac": {
       "category": "public.app-category.utilities"
+    },
+    "directories": {
+      "output": "dist"
     }
   }
 }
