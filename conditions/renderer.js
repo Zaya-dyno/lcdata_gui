@@ -100,7 +100,7 @@ table.appendChild(tbody);
 
 container.appendChild(table);
 
-document.getElementById('submit_config').addEventListener('click', function() {
+document.getElementById('submit_config').addEventListener('click', async function() {
     context.experiment_list.forEach((experiment, idx) => {
         experiment.conditions = [];
         for (let i = 0; i < experiment.conditions_number; i++) {
@@ -109,7 +109,8 @@ document.getElementById('submit_config').addEventListener('click', function() {
         }
     });
     
-    window.electronAPI.sendContext(JSON.stringify(context));
+    const result = await window.electronAPI.sendContext(JSON.stringify(context));
+    localStorage.setItem('resultLCDATA', JSON.stringify(result));
 
     window.location.href = '../result.html';
 });
