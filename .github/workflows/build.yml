@@ -13,7 +13,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [macos-arm64]
 
     steps:
       - name: Checkout code
@@ -30,8 +30,6 @@ jobs:
       - name: Build Electron app
         run: npm run build
 
-      - name: Package Electron app
-        run: npm run dist
 
       # Optionally, upload artifacts
       - name: Upload Artifacts
