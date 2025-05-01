@@ -1,39 +1,39 @@
-# .github/workflows/build.yml
+# # .github/workflows/build.yml
 
-name: Build Electron App
+# name: Build Electron App
 
-on:
-  push:
-    branches: [ main ]
+# on:
+#   push:
+#     branches: [ main ]
 
-jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macos-latest]
+# jobs:
+#   build:
+#     runs-on: ${{ matrix.os }}
+#     strategy:
+#       matrix:
+#         os: [macos-latest]
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 21
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 21
 
-      - name: Install dependencies
-        run: npm ci
+#       - name: Install dependencies
+#         run: npm ci
 
-      - name: Build Electron app
-        run: npm run build
-        env:
-          CSC_IDENTITY_AUTO_DISCOVERY: false
+#       - name: Build Electron app
+#         run: npm run build
+#         env:
+#           CSC_IDENTITY_AUTO_DISCOVERY: false
 
 
-      # Optionally, upload artifacts
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: electron-app-${{ matrix.os }}
-          path: dist/
+#       # Optionally, upload artifacts
+#       - name: Upload Artifacts
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: electron-app-${{ matrix.os }}
+#           path: dist/
