@@ -4,46 +4,146 @@
     <meta charset="UTF-8">
     <title>Electron App</title>
     <style>
+        :root {
+            --primary-blue: #1a73e8;
+            --hover-blue: #1557b0;
+            --border-color: #dadce0;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #f5f5f5;
+            background-color: #f8f9fa;
+            color: var(--text-primary);
         }
+
         .container {
             max-width: 800px;
             margin: 0 auto;
             background-color: white;
-            padding: 20px;
+            padding: 32px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 1px 2px 0 rgba(60,64,67,.3), 0 2px 6px 2px rgba(60,64,67,.15);
         }
+
         h1 {
-            color: #333;
-            margin-bottom: 20px;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            font-size: 24px;
+            font-weight: 400;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        .experiment-section {
+            background-color: #f8f9fa;
+            padding: 16px;
+            border-radius: 4px;
+            margin-bottom: 24px;
+        }
+
+        .experiment-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .btn {
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--hover-blue);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-blue);
+            border: 1px solid var(--primary-blue);
+        }
+
+        .btn-secondary:hover {
+            background-color: #f4f8fe;
+        }
+
+        #experiment_list {
+            background-color: #f8f9fa;
+            padding: 16px;
+            border-radius: 4px;
+            margin-bottom: 24px;
+        }
+        #experiment_list button {
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            margin-left: 16px;
+        }
+        #experiment_list button:hover {
+            background-color: var(--hover-blue);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Welcome to LCDATA tool</h1>
-        <!-- Directory Form Start -->
         <form id="dirForm">
-            <div style="margin-bottom: 12px;">
-                <label for="inputDir">Input Directory:</label><br>
-                <input type="file" webkitdirectory directory multiple id="inputDir" name="inputDir" placeholder="Enter input directory path" style="width: 100%; padding: 8px; margin-top: 4px;">
+            <div class="form-group">
+                <label class="form-label" for="inputDir">Input Directory</label>
+                <input type="file" webkitdirectory directory multiple id="inputDir" name="inputDir" class="form-control" placeholder="Enter input directory path">
             </div>
-            <div>Replica number</div>
-            <input type="text" id="replica_number" placeholder="Replica number" value="3">
-            <div id="experiment_add">
-                <input type="text" id="experiment_name" placeholder="Experiment name">
-                <input type="text" id="experiment_conditions" placeholder="Experiment conditions">
-                <button id="add_experiment">Add experiment</button>
+
+            <div class="form-group">
+                <label class="form-label" for="replica_number">Replica Number</label>
+                <input type="text" id="replica_number" class="form-control" placeholder="Replica number" value="3">
             </div>
-            <div id="experiment_list"></div>
-            <button type="submit" style="padding: 8px 16px;">Process</button>
+
+            <div class="experiment-section">
+                <div class="experiment-inputs">
+                    <input type="text" id="experiment_name" class="form-control" placeholder="Experiment name">
+                    <input type="text" id="experiment_conditions" class="form-control" placeholder="Experiment conditions">
+                    <button type="button" id="add_experiment" class="btn btn-secondary">Add experiment</button>
+                </div>
+                <div id="experiment_list"></div>
+            </div>
+
+            <button type="submit" class="btn">Process</button>
         </form>
-        <!-- Directory Form End -->
     </div>
     <script src="renderer.js"></script>
 </body>

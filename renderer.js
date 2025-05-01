@@ -22,14 +22,16 @@ function display_experiment_list(){
     const experiment_list_section = document.getElementById('experiment_list');
     experiment_list_section.innerHTML = '';
     experiment_list.forEach(function(experiment) {
-        experiment_list_section.innerHTML += '<div>' + experiment.name + ':' + experiment.conditions_number + '</div>';
+        var div = document.createElement('div');
+        div.textContent = experiment.name + ':' + experiment.conditions_number;
         button = document.createElement('button');
         button.textContent = 'Delete';
         button.addEventListener('click', function() {
             experiment_list.splice(experiment_list.indexOf(experiment), 1);
             display_experiment_list();
         });
-        experiment_list_section.appendChild(button);
+        div.appendChild(button);
+        experiment_list_section.appendChild(div);
     });
 }
 
