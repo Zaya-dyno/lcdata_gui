@@ -3,7 +3,12 @@ const path = require('path');
 const { execSync } = require('child_process');
 const fs = require('fs');
 const archiver = require('archiver');
-
+const userBin = path.join(require('os').homedir(), 'bin');
+const userLocalBin = path.join(require('os').homedir(), '.local', 'bin');
+const customEnv = {
+  ...process.env,
+  PATH: `${userBin}:${userLocalBin}:${process.env.PATH}`
+};
 // Get a writable temp directory outside the asar archive
 const tempBaseDir = path.join(app.getPath('userData'), 'temp');
 
@@ -73,8 +78,12 @@ function createWindow() {
     fs.writeFileSync(path.join(tempBaseDir, 'config.csv'), config_csv);
     const exper_num = context.experiment_list.length;
 
+    // Create a custom env with user bin paths
     try {
-      execSync(`lcdata "${path.join(tempBaseDir, 'input')}" "${path.join(tempBaseDir, 'config.csv')}" "${path.join(tempBaseDir, 'output')}" ${exper_num}`);
+      execSync(
+        `lcdata "${path.join(tempBaseDir, 'input')}" "${path.join(tempBaseDir, 'config.csv')}" "${path.join(tempBaseDir, 'output')}" ${exper_num}`,
+        { env: customEnv }
+      );
     } catch (error) {
       return {error: error.message};
     }
