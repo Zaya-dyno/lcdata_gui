@@ -5,12 +5,10 @@ const fs = require('fs');
 const archiver = require('archiver');
 const userBin = path.join(require('os').homedir(), 'bin');
 const userLocalBin = path.join(require('os').homedir(), '.local', 'bin');
-const customEnv = {
-  ...process.env,
-  PATH: `${userBin}:${userLocalBin}:${process.env.PATH}`
-};
+
 // Get a writable temp directory outside the asar archive
 const tempBaseDir = path.join(app.getPath('userData'), 'temp');
+
 
 function prepareTempDir() {
   if (fs.existsSync(tempBaseDir)) {
@@ -80,10 +78,7 @@ function createWindow() {
 
     // Create a custom env with user bin paths
     try {
-      execSync(
-        `lcdata "${path.join(tempBaseDir, 'input')}" "${path.join(tempBaseDir, 'config.csv')}" "${path.join(tempBaseDir, 'output')}" ${exper_num}`,
-        { env: customEnv }
-      );
+      execSync(`lcdata "${path.join(tempBaseDir, 'input')}" "${path.join(tempBaseDir, 'config.csv')}" "${path.join(tempBaseDir, 'output')}" ${exper_num}`);
     } catch (error) {
       return {error: error.message};
     }
@@ -123,10 +118,14 @@ function createWindow() {
   }
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+  // Dynamically import fix-path (ESM)
+  const fixPath = (await import('fix-path')).default;
+  fixPath();
+
   createWindow();
 
-app.on('activate', function () {
+  app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 });
