@@ -118,8 +118,9 @@
             background-color: var(--hover-blue);
         }
     </style>
-</head>
+</head>å
 <body>
+    <button id="create_configuration" onclick="create_configuration()">Create configuration</button>
     <div class="container">
         <h1>Welcome to LCDATA tool</h1>
         <form id="dirForm">
@@ -129,17 +130,8 @@
             </div>
 
             <div class="form-group">
-                <label class="form-label" for="replica_number">Replica Number</label>
-                <input type="text" id="replica_number" class="form-control" placeholder="Replica number" value="3">
-            </div>
-
-            <div class="experiment-section">
-                <div class="experiment-inputs">
-                    <input type="text" id="experiment_name" class="form-control" placeholder="Experiment name">
-                    <input type="text" id="experiment_conditions" class="form-control" placeholder="Experiment conditions">
-                    <button type="button" id="add_experiment" class="btn btn-secondary">Add experiment</button>
-                </div>
-                <div id="experiment_list"></div>
+                <label class="form-label" for="configFile">Configuration File</label>
+                <input type="file" id="configFile" name="configFile" class="form-control" placeholder="Enter configuration file path">
             </div>
 
             <button type="submit" class="btn">Process</button>

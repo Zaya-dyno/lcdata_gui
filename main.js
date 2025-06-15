@@ -21,9 +21,8 @@ function prepareTempDir() {
         fs.unlinkSync(curPath);
       }
     });
-  } else {
-    fs.mkdirSync(tempBaseDir, { recursive: true });
   }
+  fs.mkdirSync(tempBaseDir, { recursive: true });
 }
 
 function prepare_input_dir() {
@@ -58,27 +57,25 @@ function createWindow() {
 
   // Load the index.html file
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
-  ipcMain.on('saveFiles', (event, filesData) => {
+  ipcMain.on('saveFiles', (event, filesData, config) => {
     filesData.forEach(file => {
-      fs.writeFileSync(path.join(tempBaseDir, 'input', file.name), Buffer.from(file.buffer));
+      if (config) {
+        fs.writeFileSync(path.join(tempBaseDir, file.name), Buffer.from(file.buffer));
+      } else {
+        fs.writeFileSync(path.join(tempBaseDir, 'input', file.name), Buffer.from(file.buffer));
+      }
     });
   });
-  ipcMain.handle('sendContext', async (event, context) => {
-    context = JSON.parse(context);
-    var config_csv = '';
-    context.experiment_list.forEach((experiment, idx) => {
-        config_csv += experiment.name + ',' + experiment.conditions_number;
-        experiment.conditions.forEach((condition, idx) => {
-            config_csv += ',' + condition;
-        });
-        config_csv += '\n';
-    });
-    fs.writeFileSync(path.join(tempBaseDir, 'config.csv'), config_csv);
-    const exper_num = context.experiment_list.length;
+  ipcMain.handle('run_lcdata', async (event) => {
 
+    // Make sure the config.json file exist.
+    // if it don't exist, wait for 1 second and check again.
+    while (!fs.existsSync(path.join(tempBaseDir, 'config.json'))) {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
     // Create a custom env with user bin paths
     try {
-      execSync(`lcdata "${path.join(tempBaseDir, 'input')}" "${path.join(tempBaseDir, 'config.csv')}" "${path.join(tempBaseDir, 'output')}" ${exper_num}`);
+      execSync(`lcdata "${path.join(tempBaseDir, 'input')}" "${path.join(tempBaseDir, 'config.json')}" "${path.join(tempBaseDir, 'output')}"`);
     } catch (error) {
       return {error: error.message};
     }
